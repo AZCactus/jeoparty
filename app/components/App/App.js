@@ -13,7 +13,7 @@ import AppActions from '../../actions/AppActions';
 
 if (process.env.BROWSER) {
   require('./_App.scss');
-  require('./_App.sass');
+  require('./_AppLayout.scss');
   require('file?name=favicon.ico!../../images/favicon.ico');
 }
 
