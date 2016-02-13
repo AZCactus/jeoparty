@@ -10,29 +10,6 @@ import favicon from 'serve-favicon';
 import five from 'johnny-five';
 import socket from 'socket.io';
 
-let ledOne, ledTwo, ledThree, playerOne, playerTwo, playerThree;
-let board = new five.Board({port: '/dev/cu.usbmodem1411'});
-
-
-board.on("ready", function() {
-  console.log("board is ready")
-
-  ledOne = new five.Led(3);
-  ledTwo = new five.Led(6);
-  ledThree = new five.Led(9);
-
-  playerOne = new five.Button(2);
-  playerTwo = new five.Button(5);
-  playerThree = new five.Button(8);
-
-  board.repl.inject({
-    playerOne: playerOne,
-    playerTwo: playerTwo,
-    playerThree: playerThree,
-  });
-
-});
-
 
 // Profile dev or production
 let profile = process.env.DEV ? 'dev' : 'prod',
@@ -80,6 +57,32 @@ if(module.hot) {
     renderer.init('dev');
   });
 }
+
+
+//
+// johnny-five config
+let ledOne, ledTwo, ledThree, playerOne, playerTwo, playerThree;
+let board = new five.Board({port: process.env.USB ? process.env.USB :'/dev/cu.usbmodem1411'});
+
+board.on("ready", function() {
+  console.log("board is ready")
+
+  ledOne = new five.Led(3);
+  ledTwo = new five.Led(6);
+  ledThree = new five.Led(9);
+
+  playerOne = new five.Button(2);
+  playerTwo = new five.Button(5);
+  playerThree = new five.Button(8);
+
+  board.repl.inject({
+    playerOne: playerOne,
+    playerTwo: playerTwo,
+    playerThree: playerThree,
+  });
+
+});
+
 
 //
 // socket.io config
