@@ -8,7 +8,6 @@ import HtmlHeaderTags from '../Document/HtmlHeaderTags';
 if (process.env.BROWSER) {
   require('./_App.scss');
   require('./_AppLayout.scss');
-  require('file?name=favicon.ico!../../images/favicon.ico');
 }
 
 export default class App extends Component {
