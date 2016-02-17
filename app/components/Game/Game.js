@@ -131,7 +131,7 @@ export default class Game extends Component {
       /> :
       <Home onToggleSelectionView={this.handleToggleSelectionView} />
 
-    if (selecting && !playerCount) {
+    if (selecting) {
       component = <PlayerSelection players={players} onTogglePlayer={this.handleTogglePlayer} onToggleSelectionView={this.handleToggleSelectionView} />
     }
 
