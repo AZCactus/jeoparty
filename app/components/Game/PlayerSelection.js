@@ -9,6 +9,7 @@ export default class PlayerSelection extends Component {
     super();
 
     this._listenToButtons = this._listenToButtons.bind(this);
+    this._togglePlayer = this._togglePlayer.bind(this);
   }
 
   componentDidMount() {
@@ -22,19 +23,17 @@ export default class PlayerSelection extends Component {
 
   componentWillUnmount() {
     const socket = io();
-    socket.removeListener('rec');
+    socket.removeListener('rec', this._togglePlayer);
     clearTimeout(this.timer);
   }
 
   _listenToButtons() {
     const socket = io();
-    const callback = (obj) => {
-      this.props.onTogglePlayer(obj.player)
-    };
+    socket.on('rec', this._togglePlayer);
+  }
 
-    socket.on('rec', function (data) {
-      callback(data);
-    });
+  _togglePlayer(obj) {
+    this.props.onTogglePlayer(obj.player);
   }
 
 
