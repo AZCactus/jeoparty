@@ -15,7 +15,7 @@ export default class PlayerSelection extends Component {
     const socket = io();
     socket.emit("led-stop");
     this._listenToButtons();
-    setTimeout(() => {
+    this.timer = setTimeout(() => {
       this.props.onToggleSelectionView(false);
     }, 10000)
   }
@@ -23,6 +23,7 @@ export default class PlayerSelection extends Component {
   componentWillUnmount() {
     const socket = io();
     socket.removeListener('rec');
+    clearTimeout(this.timer);
   }
 
   _listenToButtons() {
