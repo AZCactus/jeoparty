@@ -1,6 +1,8 @@
 import React, {Component} from 'react';
 import io from 'socket.io-client';
 
+import VelocityComponent from 'velocity-react/velocity-component';
+
 export default class PlayerSelection extends Component {
 
   constructor() {
@@ -13,6 +15,9 @@ export default class PlayerSelection extends Component {
     const socket = io();
     socket.emit("led-stop");
     this._listenToButtons();
+    setTimeout(() => {
+      this.props.onToggleSelectionView(false);
+    }, 10000)
   }
 
   componentWillUnmount() {
@@ -38,16 +43,24 @@ export default class PlayerSelection extends Component {
       players,
     } = this.props;
 
+    const duration = 100;
+
     return (
       <div className="view flex flex-column flex-start flex-center">
         <header className="full-x" style={{textAlign: "center"}}>
-          <h2>Player Selection</h2>
-          <p>Press Button To Play Game</p>
+          <h2 style={{textTransform: "uppercase", fontSize: 44, color: "gold"}}>Who's Ready To Party?</h2>
+          <h3>Buzz In To Join Jeoparty</h3>
         </header>
-        <div className="flex flex-justify full-x">
-          <p>Player One {players["1"] ? "Active" : ""}</p>
-          <p>Player Two {players["2"] ? "Active" : ""}</p>
-          <p>Player Three {players["3"] ? "Active" : ""}</p>
+        <div className="flex flex-justify" style={{margin: "50px auto 0", width: "80%", textAlign: "center"}}>
+          <VelocityComponent duration={duration} animation={{opacity: players["1"] ? 1 : "0.5"}}>
+            <div className="flex flex-column flex-center"><div style={{fontSize: 28, textTransform: "uppercase"}}>Player</div><div style={{fontSize: 82, color: players["1"] ? "gold" : "white" }}>1</div></div>
+          </VelocityComponent>
+          <VelocityComponent duration={duration} animation={{opacity: players["2"] ? 1 : "0.5", color: players["2"] ? "gold" : "white" }}>
+            <div className="flex flex-column flex-center"><div style={{fontSize: 28, textTransform: "uppercase"}}>Player</div><div style={{fontSize: 82, color: players["2"] ? "gold" : "white" }}>2</div></div>
+          </VelocityComponent>
+          <VelocityComponent duration={duration} animation={{opacity: players["3"] ? 1 : "0.5", color: players["3"] ? "gold" : "white" }}>
+            <div className="flex flex-column flex-center"><div style={{fontSize: 28, textTransform: "uppercase"}}>Player</div><div style={{fontSize: 82, color: players["3"] ? "gold" : "white" }}>3</div></div>
+          </VelocityComponent>
         </div>
       </div>
     );

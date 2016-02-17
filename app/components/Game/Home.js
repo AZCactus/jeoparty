@@ -1,12 +1,16 @@
 import React, { Component, PropTypes } from 'react';
 
 import io from 'socket.io-client';
+import VelocityComponent from 'velocity-react/velocity-component';
 
 
 export default class Home extends Component {
 
   constructor() {
     super();
+    this.state = {
+      blink: true,
+    }
     this._listenToButton = this._listenToButton.bind(this);
   }
 
@@ -15,11 +19,16 @@ export default class Home extends Component {
     socket.emit("led-strobe-all");
 
     this._listenToButton();
+
+    this.timer = setInterval(() => {
+      this.setState({blink: !this.state.blink})
+    }, 750);
   }
 
   componentWillUnmount() {
     let socket = io();
     socket.removeListener('rec');
+    clearInterval(this.timer);
   }
 
   _listenToButton() {
@@ -34,10 +43,11 @@ export default class Home extends Component {
 
     return (
       <div className="flex flex-column flex-center flex-middle view">
-        <h1>Jeoparty!</h1>
+        <h1 style={{fontSize: 64, textTransform: "uppercase"}}>Jeoparty!</h1>
         <h2>It's party time!</h2>
-        <h3>Press Any Button To Play!</h3>
-        <div><button onClick={this.props.onToggleSelectionView}>Button</button></div>
+        <VelocityComponent animation={{opacity: this.state.blink ? 1 : 0}} duration={120}>
+          <h3 style={{color: "gold", textTransform: "uppercase"}}>Press Any Button!</h3>
+        </VelocityComponent>
       </div>
     );
   }
