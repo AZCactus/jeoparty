@@ -111,32 +111,35 @@ export default class Game extends Component {
   }
 
 
-  _renderCanvas(selecting) {
-    const {
-      players,
-    } = this.state;
+  _renderCanvas(selecting, players) {
 
     let component = Object.keys(players).length ?
       <Board
         onAddPoints={this.handleAddPoints}
         onResetWrong={this.handleResetWrong}
         onToggleWrong={this.handleToggleWrong}
+        onTogglePlayer={this.handleTogglePlayer}
+        onToggleSelectionView={this.handleToggleSelectionView}
         players={_.filter(this.state.players, {wrong: false})}
       /> :
       <Home onToggleSelectionView={this.handleToggleSelectionView} />
 
     if (selecting) {
-      component = <PlayerSelection players={players} onTogglePlayer={this.handleTogglePlayer} />
+      component = <PlayerSelection players={players} onTogglePlayer={this.handleTogglePlayer} onToggleSelectionView={this.handleToggleSelectionView} />
     }
 
     return component;
   }
 
   render() {
+    const {
+      players,
+      selectionView,
+    } = this.state;
 
     return (
       <div>
-        { this.props.loading ? this._renderLoading() : this._renderCanvas(this.state.selectionView) }
+        { this.props.loading ? this._renderLoading() : this._renderCanvas(selectionView, players) }
       </div>
     );
     // return (

@@ -57,8 +57,13 @@ export default class Categories extends Component {
     } = this.props;
 
     return (
-      <div className="view flex flex-justify flex-start">
-        {Object.keys(categories).length ? this._renderCategories() : void 0}
+      <div className="view">
+        <div
+          className="flex flex-justify flex-start"
+          style={{width: "95%", margin: "10px auto 0", borderBottom: "2px solid black", borderRight: "2px solid black"}}
+        >
+          {Object.keys(categories).length ? this._renderCategories() : void 0}
+        </div>
       </div>
     );
   }

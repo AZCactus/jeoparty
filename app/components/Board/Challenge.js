@@ -69,7 +69,7 @@ export default class Challenge extends Component {
     return (
       <div className="view flex flex-justify flex-middle flex-center flex-column">
         <span>{8 - seconds}</span>
-        <h1 style={{width: "75%"}}>{this.props.clue}</h1>
+        <h1 style={{width: "75%", textAlign: "center"}}>{this.props.clue}</h1>
       </div>
     );
   }
