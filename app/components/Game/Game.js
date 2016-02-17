@@ -118,7 +118,9 @@ export default class Game extends Component {
 
   _renderCanvas(selecting, players) {
 
-    let component = Object.keys(players).length ?
+    const playerCount = Object.keys(players).length;
+
+    let component = playerCount ?
       <Board
         onAddPoints={this.handleAddPoints}
         onResetWrong={this.handleResetWrong}
@@ -129,7 +131,7 @@ export default class Game extends Component {
       /> :
       <Home onToggleSelectionView={this.handleToggleSelectionView} />
 
-    if (selecting) {
+    if (selecting && !playerCount) {
       component = <PlayerSelection players={players} onTogglePlayer={this.handleTogglePlayer} onToggleSelectionView={this.handleToggleSelectionView} />
     }
 
