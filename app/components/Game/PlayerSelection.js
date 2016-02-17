@@ -5,18 +5,21 @@ import VelocityComponent from 'velocity-react/velocity-component';
 
 export default class PlayerSelection extends Component {
 
-  constructor() {
-    super();
-
-    this._listenToButtons = this._listenToButtons.bind(this);
-  }
 
   componentDidMount() {
     const socket = io();
     socket.emit("led-stop");
-    this._listenToButtons();
+
     this.timer = setTimeout(() => {
       this.props.onToggleSelectionView(false);
+      const socket = io();
+      const callback = (obj) => {
+        this.props.onTogglePlayer(obj.player)
+      };
+
+      socket.on('rec', function (data) {
+        callback(data);
+      });
     }, 10000)
   }
 
@@ -24,17 +27,6 @@ export default class PlayerSelection extends Component {
     const socket = io();
     socket.removeListener('rec');
     clearTimeout(this.timer);
-  }
-
-  _listenToButtons() {
-    const socket = io();
-    const callback = (obj) => {
-      this.props.onTogglePlayer(obj.player)
-    };
-
-    socket.on('rec', function (data) {
-      callback(data);
-    });
   }
 
 
