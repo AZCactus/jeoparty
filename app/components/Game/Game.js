@@ -33,6 +33,11 @@ export default class Game extends Component {
       console.log('you don\'t have speech recog');
     } else {
       this.props.toggleLoading(false);
+
+      // hack for microphone
+      let recognition = new webkitSpeechRecognition();
+      recognition.lang = 'en-US';
+      reconition.start();
     }
   }
 
