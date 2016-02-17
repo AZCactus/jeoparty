@@ -37,7 +37,7 @@ export default class Game extends Component {
       // hack for microphone
       let recognition = new webkitSpeechRecognition();
       recognition.lang = 'en-US';
-      reconition.start();
+      recognition.start();
     }
   }
 
