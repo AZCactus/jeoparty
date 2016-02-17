@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import Categories from './Categories';
 import Challenge from './Challenge';
 import Scoreboard from './Scoreboard';
+import End from './End';
 
 import _ from 'lodash';
 import reqwest from 'reqwest';
@@ -27,6 +28,25 @@ export default class Board extends Component {
     this.addCategory = this.addCategory.bind(this);
     this.handleBuzz = this.handleBuzz.bind(this);
     this.validateAnswer = this.validateAnswer.bind(this);
+    this._renderBoardState = this._renderBoardState.bind(this);
+  }
+
+
+  flush() {
+    this.setState({
+      activePlayer: null,
+      categories: {},
+      challenge: null,
+      buzzed: null,
+      questions: {},
+      statement: null,
+    });
+
+    this.props.players.forEach(player => {
+      this.props.onTogglePlayer(player.id);
+    });
+
+    this.props.onToggleSelectionView(false);
   }
 
 
@@ -206,11 +226,36 @@ export default class Board extends Component {
   }
 
 
+  _renderBoardState(questions) {
+    const {
+      activePlayer,
+      categories,
+    } = this.state;
+
+    console.log(_.filter(questions, {answered: true}))
+
+    const answeredQuestions = _.filter(questions, {answered: true}).length
+
+    if (answeredQuestions < 30) {
+      return <Categories
+        onSelect={this.handleSelect.bind(this)}
+        setActivePlayer={this.handleSetActivePlayer.bind(this)}
+        activePlayer={activePlayer}
+        categories={categories}
+        players={this.props.players}
+        questions={questions} />;
+    } else {
+      const winner = _.last(_.sortBy(this.props.players, 'score'));
+      console.log(winner)
+      return <End flush={this.flush.bind(this)} {...winner} />;
+    }
+  }
+
+
   render() {
     const {
       activePlayer,
       buzzed,
-      categories,
       challenge,
       questions,
       statement,
@@ -226,13 +271,7 @@ export default class Board extends Component {
             onBuzz={this.handleBuzz}
             start={Date.now()}
             onReset={this.resetChallenge.bind(this)} /> :
-          <Categories
-            onSelect={this.handleSelect.bind(this)}
-            setActivePlayer={this.handleSetActivePlayer.bind(this)}
-            activePlayer={activePlayer}
-            categories={categories}
-            players={this.props.players}
-            questions={questions} />
+          this._renderBoardState(questions)
         }
         <Scoreboard players={this.props.players} activePlayer={activePlayer} buzzed={buzzed} />
       </div>
