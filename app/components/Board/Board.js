@@ -58,7 +58,7 @@ export default class Board extends Component {
   sortRandomCluesForCategories(array) {
     let categories = []
 
-    array.forEach(clue => {
+    _.shuffle(array).forEach(clue => {
       if (categories.indexOf(clue.category.id) > -1 || categories.length > 5) {
         console.log("limiting")
       } else {
