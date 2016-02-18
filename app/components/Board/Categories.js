@@ -2,8 +2,9 @@ import React, { Component, PropTypes } from 'react';
 import Category from './Category';
 import Questions from './Questions';
 
+import GameActions from '../../actions/GameActions';
+
 import _ from 'lodash';
-import io from 'socket.io-client';
 
 export default class Categories extends Component {
 
@@ -15,17 +16,14 @@ export default class Categories extends Component {
 
 
   componentDidMount() {
-    const socket = io();
-    socket.emit(`led-stop`);
+    GameActions.ledOff.defer();
 
     if (this.props.activePlayer) {
-
-      socket.emit(`led-on-${this.props.activePlayer}`);
-
+      GameActions.ledOn.defer(this.props.activePlayer);
     } else {
 
       const rand = _.sample(this.props.players).id
-      socket.emit(`led-on-${rand}`);
+      GameActions.ledOn.defer(rand);
       this.props.setActivePlayer(rand);
 
     }

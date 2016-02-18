@@ -5,23 +5,22 @@ import Home from '../Game/Home';
 import PlayerSelection from '../Game/PlayerSelection';
 import Board from '../Board/Board';
 
-import _ from 'lodash';
-import io from 'socket.io-client';
+import GameStore from '../../stores/GameStore';
+import GameActions from '../../actions/GameActions';
 
+import _ from 'lodash';
 
 export default class Game extends Component {
 
   constructor() {
     super();
 
-    this.state = {
-      players: {},
-      selectionView: false,
-    }
+    this.state = GameStore.getState();
+
+    this.onChange = this.onChange.bind(this);
+    this._renderView = this._renderView.bind(this);
 
     this._renderCanvas = this._renderCanvas.bind(this);
-    this.handleTogglePlayer = this.handleTogglePlayer.bind(this);
-    this.handleToggleSelectionView = this.handleToggleSelectionView.bind(this);
     this.handleAddPoints = this.handleAddPoints.bind(this);
     this.handleToggleWrong = this.handleToggleWrong.bind(this);
     this.handleResetWrong = this.handleResetWrong.bind(this);
@@ -29,38 +28,21 @@ export default class Game extends Component {
 
 
   componentDidMount() {
+    GameStore.listen(this.onChange);
+
     if (!('webkitSpeechRecognition' in window)) {
       console.log('you don\'t have speech recog');
     } else {
       this.props.toggleLoading(false);
-
-      // hack for microphone
-      let recognition = new webkitSpeechRecognition();
-      recognition.lang = 'en-US';
-      recognition.start();
     }
   }
 
+  componentWillUnmount() {
+    GameStore.unlisten(this.onChange);
+  }
 
-  handleTogglePlayer(id) {
-    let {
-      players,
-    } = this.state;
-
-    const socket = io();
-
-    if (players[id]) {
-      delete players[id];
-      socket.emit(`led-off-${id}`);
-    } else {
-      socket.emit(`led-on-${id}`);
-      players[id] = {id: id, score: 0, wrong: false};
-    }
-
-    this.setState({
-      players: players,
-      selectionView: Object.keys(players).length === 3 ? false : true,
-    });
+  onChange(state) {
+    this.setState(state);
   }
 
 
@@ -73,13 +55,6 @@ export default class Game extends Component {
 
     this.setState({
       players: players,
-    });
-  }
-
-
-  handleToggleSelectionView(bool) {
-    this.setState({
-      selectionView: bool,
     });
   }
 
@@ -138,15 +113,34 @@ export default class Game extends Component {
     return component;
   }
 
+  _renderView(view, players) {
+    console.log("rendering view", view)
+
+    let component;
+
+    switch(view) {
+      case "select":
+        component = <PlayerSelection players={players} />;
+        break;
+      case "board":
+        component = <Board players={_.toArray(players)} />
+        break;
+      default:
+        component = <Home />
+    }
+
+    return component;
+  }
+
   render() {
     const {
       players,
-      selectionView,
+      view,
     } = this.state;
 
     return (
       <div>
-        { this.props.loading ? this._renderLoading() : this._renderCanvas(selectionView, players) }
+        { this.props.loading ? this._renderLoading() : this._renderView(view, players)}
       </div>
     );
     // return (
@@ -157,3 +151,7 @@ export default class Game extends Component {
   }
 
 }
+
+Game.defaultProps = {
+  loading: true,
+};

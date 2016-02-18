@@ -1,49 +1,59 @@
-import React, {Component} from 'react';
-import io from 'socket.io-client';
+import React, { Component } from 'react';
+import GameActions from '../../actions/GameActions';
+import _ from 'lodash';
 
-import VelocityComponent from 'velocity-react/velocity-component';
 
 export default class PlayerSelection extends Component {
 
   constructor() {
     super();
 
-    this._listenToButtons = this._listenToButtons.bind(this);
-    this._togglePlayer = this._togglePlayer.bind(this);
+    this.onTimesUp = this.onTimesUp.bind(this);
+    this.onBuzz = this.onBuzz.bind(this);
   }
 
   componentDidMount() {
-    const socket = io();
-    socket.emit("led-stop");
-    this._listenToButtons();
-    this.timer = setTimeout(() => {
-      this.props.onToggleSelectionView(false);
-    }, 10000)
+    GameActions.buzzListen.defer(this.onBuzz);
+    GameActions.setTimer.defer({
+      callback: this.onTimesUp,
+      time: 10000,
+    });
   }
 
-  componentWillUnmount() {
-    const socket = io();
-    socket.removeListener('rec', this._togglePlayer);
-    clearTimeout(this.timer);
+
+  onTimesUp() {
+    console.log("times up!")
+    if (Object.keys(this.props.players).length) {
+      GameActions.changeView.defer("board");
+    } else {
+      GameActions.changeView.defer(null);
+    }
   }
 
-  _listenToButtons() {
-    const socket = io();
-    socket.on('rec', this._togglePlayer);
+  onBuzz(data) {
+    GameActions.togglePlayer(data.player);
+    if (Object.keys(this.props.players).length === 3) {
+      GameActions.changeView.defer("board");
+    }
   }
 
-  _togglePlayer(obj) {
-    this.props.onTogglePlayer(obj.player);
-  }
 
+  _renderPlayers(players) {
+
+    return _.map([1,2,3], (id) => {
+      return (
+        <div key={`player-select-${id}`} className="flex flex-column flex-center" style={{opacity: players[id] ? 1 : "0.5"}}>
+          <div style={{fontSize: 28, textTransform: "uppercase"}}>Player</div>
+          <div style={{fontSize: 82, color: players[id] ? "gold" : "white" }}>{id}</div>
+        </div>
+      );
+    });
+  }
 
   render() {
-
     const {
       players,
     } = this.props;
-
-    const duration = 100;
 
     return (
       <div className="view flex flex-column flex-start flex-center">
@@ -52,17 +62,13 @@ export default class PlayerSelection extends Component {
           <h3>Buzz In To Join Jeoparty</h3>
         </header>
         <div className="flex flex-justify" style={{margin: "50px auto 0", width: "80%", textAlign: "center"}}>
-          <VelocityComponent duration={duration} animation={{opacity: players["1"] ? 1 : "0.5"}}>
-            <div className="flex flex-column flex-center"><div style={{fontSize: 28, textTransform: "uppercase"}}>Player</div><div style={{fontSize: 82, color: players["1"] ? "gold" : "white" }}>1</div></div>
-          </VelocityComponent>
-          <VelocityComponent duration={duration} animation={{opacity: players["2"] ? 1 : "0.5", color: players["2"] ? "gold" : "white" }}>
-            <div className="flex flex-column flex-center"><div style={{fontSize: 28, textTransform: "uppercase"}}>Player</div><div style={{fontSize: 82, color: players["2"] ? "gold" : "white" }}>2</div></div>
-          </VelocityComponent>
-          <VelocityComponent duration={duration} animation={{opacity: players["3"] ? 1 : "0.5", color: players["3"] ? "gold" : "white" }}>
-            <div className="flex flex-column flex-center"><div style={{fontSize: 28, textTransform: "uppercase"}}>Player</div><div style={{fontSize: 82, color: players["3"] ? "gold" : "white" }}>3</div></div>
-          </VelocityComponent>
+          {this._renderPlayers(players)}
         </div>
       </div>
     );
   }
 }
+
+PlayerSelection.defaultProps = {
+  players: {},
+};

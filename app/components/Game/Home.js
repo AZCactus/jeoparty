@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 
-import io from 'socket.io-client';
+import GameActions from '../../actions/GameActions';
+
 import VelocityComponent from 'velocity-react/velocity-component';
 
 
@@ -11,33 +12,32 @@ export default class Home extends Component {
     this.state = {
       blink: true,
     }
-    this._listenToButton = this._listenToButton.bind(this);
   }
 
   componentDidMount() {
-    let socket = io();
-    socket.emit("led-strobe-all");
+    const {
+      buzzListen,
+      ledOff,
+      ledStrobe,
+    } = GameActions;
 
-    this._listenToButton();
+    ledOff.defer();
+    ledStrobe.defer();
+    buzzListen.defer(this.onBuzz);
 
-    this.timer = setInterval(() => {
-      this.setState({blink: !this.state.blink})
-    }, 750);
+    // this.timer = setInterval(() => {
+    //   this.setState({blink: !this.state.blink})
+    // }, 750);
   }
 
   componentWillUnmount() {
-    let socket = io();
-    socket.removeListener('rec');
-    clearInterval(this.timer);
+    // clearInterval(this.timer);
   }
 
-  _listenToButton() {
-    let socket = io();
-    const buttonTap = () => {this.props.onToggleSelectionView(true)};
-    socket.on('rec', function (data) {
-      buttonTap();
-    });
+  onBuzz() {
+    GameActions.changeView('select');
   }
+
 
   render() {
 
@@ -51,8 +51,4 @@ export default class Home extends Component {
       </div>
     );
   }
-}
-
-Home.propTypes ={
-  onToggleSelectionView: PropTypes.func.isRequired,
 }
