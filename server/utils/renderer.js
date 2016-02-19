@@ -49,7 +49,7 @@ var renderer = {
     on the client side and bootstraps the stores.
     init server renderer
     */
-    alt.bootstrap(JSON.stringify(res.locals.data || oneItemBootstraped));
+    // alt.bootstrap(JSON.stringify(res.locals.data || oneItemBootstraped));
 
     try {
       let location = createLocation(req.url);

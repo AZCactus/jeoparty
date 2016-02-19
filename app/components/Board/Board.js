@@ -109,7 +109,7 @@ export default class Board extends Component {
 
   fetch(path, data, callback) {
     reqwest({
-      url: `http://jservice.io${path}`,
+      url: `https://jservice.io${path}`,
       type: "json",
       crossOrigin: true,
       method: "get",

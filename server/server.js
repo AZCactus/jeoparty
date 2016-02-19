@@ -1,6 +1,15 @@
 // NODE
 import http from 'http';
+import https from 'https';
+import fs from 'fs';
 import path from 'path';
+
+const key = fs.readFileSync('./server/key.pem');
+const cert = fs.readFileSync('./server/cert.pem');
+const https_options = {
+    key: key,
+    cert: cert
+};
 
 // EXPRESS
 import express from 'express';
@@ -41,7 +50,7 @@ renderer.init(profile);
 app.use(apiRoutes);
 app.use(renderer.render);
 
-let server = http.createServer(app).listen(app.get('port'), () => {
+let server = https.createServer(https_options, app).listen(app.get('port'), () => {
   console.log('Express server listening on port ' + app.get('port'));
 });
 
