@@ -28,8 +28,6 @@ export default class Board extends Component {
     this.sortRandomCluesForCategories = this.sortRandomCluesForCategories.bind(this);
     this.buildCategoryBoard = this.buildCategoryBoard.bind(this);
     this.addCategory = this.addCategory.bind(this);
-    this.handleBuzz = this.handleBuzz.bind(this);
-    this.validateAnswer = this.validateAnswer.bind(this);
     this._renderBoardState = this._renderBoardState.bind(this);
   }
 
@@ -43,28 +41,22 @@ export default class Board extends Component {
       questions: {},
       statement: null,
     });
-
-    this.props.players.forEach(player => {
-      this.props.onTogglePlayer(player.id);
-    });
-
-    this.props.onToggleSelectionView(false);
+    GameActions.changeView(null);
   }
 
 
   componentDidMount() {
-    this.fetch("/api/random", {count: 12}, this.sortRandomCluesForCategories)
+    this.fetch("/api/random", {count: 12}, this.sortRandomCluesForCategories);
   }
 
 
   sortRandomCluesForCategories(array) {
-    let categories = []
+    let categories = [];
 
     _.shuffle(array).forEach(clue => {
       if (categories.indexOf(clue.category.id) > -1 || categories.length > 5) {
-        console.log("limiting")
       } else {
-        categories.push(clue.category.id)
+        categories.push(clue.category.id);
       }
     });
 
@@ -74,7 +66,7 @@ export default class Board extends Component {
 
   buildCategoryBoard(categories) {
     categories.forEach( id => {
-      this.fetch('/api/category', {id: id}, this.addCategory)
+      this.fetch('/api/category', {id: id}, this.addCategory);
     });
   }
 
@@ -99,7 +91,7 @@ export default class Board extends Component {
         answered: false,
         clue: clue.question,
         answer: striptags(clue.answer.replace(re, '').replace('&', 'and')),
-      }
+      };
     });
 
     this.setState({
@@ -117,7 +109,7 @@ export default class Board extends Component {
       method: "get",
       data: data,
       success: (res) => {
-        callback(res)
+        callback(res);
       },
     });
   }
@@ -133,88 +125,24 @@ export default class Board extends Component {
     });
   }
 
-  _setStatement(event) {
-    this.setState({
-      statement: event.results[0][0].transcript,
-    });
+  handleBuzz(id) {
+    this.setState({buzzed: id});
   }
-
-  _endRecord() {
-    GameActions.ledOff();
-    this.validateAnswer();
-  }
-
-  handleBuzz(obj) {
-    // console.log(player)
-    // console.log(this.props.players)
-    // console.log(_.filter(this.props.players, {id: player}))
-    const player = obj.player;
-
-    if (_.filter(this.props.players, {id: player}).length > 0) {
-      this.setState({
-        buzzed: player,
-      });
-
-      const config = {
-        player: player,
-        onresult: this._setStatement.bind(this),
-        onend: this._endRecord.bind(this),
-      };
-
-      GameActions.recordStatement(config);
-    }
-  }
-
 
   handleSetActivePlayer(id) {
-    this.setState({activePlayer:id})
+    this.setState({activePlayer:id});
   }
 
+  onEnd() {
+    let players = _.filter(this.props.players, {wrong: true});
 
-  validateAnswer() {
-    const {
-      answer,
-      buzzed,
-      challenge,
-      statement,
-    } = this.state;
+    players.forEach( (player) => {
+      GameActions.updatePlayerValidity.defer({id: player.id, valid: true});
+    });
 
-    const {
-      onAddPoints,
-      onToggleWrong,
-      players,
-    } = this.props;
-
-    if (statement && statement.toLowerCase().search(challenge.answer.toLowerCase()) !== -1 ) {
-
-      onAddPoints(buzzed, challenge.points);
-      this.setState({
-        activePlayer: buzzed,
-        buzzed: null,
-        challenge: null,
-      });
-
-    } else {
-
-      onToggleWrong(buzzed, true);
-      onAddPoints(buzzed, -challenge.points);
-
-      this.setState({
-        buzzed: null,
-      });
-
-      if (players.length < 2) {
-        this.resetChallenge();
-      }
-
-    }
-  }
-
-
-  resetChallenge() {
     this.setState({
-      challenge: null,
       buzzed: null,
+      challenge: null,
     });
   }
 
@@ -225,10 +153,9 @@ export default class Board extends Component {
       categories,
     } = this.state;
 
-    console.log(_.filter(questions, {answered: true}))
+    const answeredQuestions = _.filter(questions, {answered: true}).length;
 
-    const answeredQuestions = _.filter(questions, {answered: true}).length
-
+    // standard 30 questions
     if (answeredQuestions < 30) {
       return <Categories
         onSelect={this.handleSelect.bind(this)}
@@ -239,7 +166,6 @@ export default class Board extends Component {
         questions={questions} />;
     } else {
       const winner = _.last(_.sortBy(this.props.players, 'score'));
-      console.log(winner)
       return <End flush={this.flush.bind(this)} {...winner} />;
     }
   }
@@ -259,11 +185,13 @@ export default class Board extends Component {
         { challenge ?
           <Challenge
             {...challenge}
+            setActivePlayer={this.handleSetActivePlayer.bind(this)}
+            players={this.props.players}
             seconds={this.props.seconds}
             buzzed={buzzed}
-            statement={statement}
-            onBuzz={this.handleBuzz}
-            reset={this.resetChallenge.bind(this)} /> :
+            buzz={this.handleBuzz.bind(this)}
+            end={this.onEnd.bind(this)}
+            success={this.onEnd.bind(this)} /> :
           this._renderBoardState(questions)
         }
         <Scoreboard players={this.props.players} activePlayer={activePlayer} buzzed={buzzed} challenge={challenge} />
