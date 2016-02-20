@@ -5,13 +5,12 @@ class GameActions {
     this.generateActions(
       'buzzListen',
       'changeView',
-      'clearInterval',
       'clearTimer',
       'ledOff',
       'ledOn',
       'ledStrobe',
-      'setInterval',
       'setTimer',
+      'tick',
       'togglePlayer',
       'createStatement',
     );

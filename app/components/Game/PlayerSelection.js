@@ -16,7 +16,7 @@ export default class PlayerSelection extends Component {
     GameActions.buzzListen.defer(this.onBuzz);
     GameActions.setTimer.defer({
       callback: this.onTimesUp,
-      time: 10000,
+      seconds: 5,
     });
   }
 
@@ -33,7 +33,8 @@ export default class PlayerSelection extends Component {
   onBuzz(data) {
     GameActions.togglePlayer(data.player);
     if (Object.keys(this.props.players).length === 3) {
-      GameActions.changeView.defer("board");
+      GameActions.clearTimer();
+      GameActions.changeView("board");
     }
   }
 
@@ -53,12 +54,14 @@ export default class PlayerSelection extends Component {
   render() {
     const {
       players,
+      seconds,
     } = this.props;
 
     return (
       <div className="view flex flex-column flex-start flex-center">
         <header className="full-x" style={{textAlign: "center"}}>
           <h2 style={{textTransform: "uppercase", fontSize: 44, color: "gold"}}>Who's Ready To Party?</h2>
+          <h5>{seconds}</h5>
           <h3>Buzz In To Join Jeoparty</h3>
         </header>
         <div className="flex flex-justify" style={{margin: "50px auto 0", width: "80%", textAlign: "center"}}>

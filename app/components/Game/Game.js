@@ -120,13 +120,13 @@ export default class Game extends Component {
 
     switch(view) {
       case "select":
-        component = <PlayerSelection players={players} />;
+        component = <PlayerSelection key="player-selection" players={players} seconds={this.state.seconds} />;
         break;
       case "board":
-        component = <Board players={_.toArray(players)} />
+        component = <Board key="board" players={_.toArray(players)} seconds={this.state.seconds} />;
         break;
       default:
-        component = <Home />
+        component = <Home key="home" />
     }
 
     return component;

@@ -13,6 +13,7 @@ class GameStore {
       buzzListener: null,
       intervalCallback: null,
       players: {},
+      seconds: 0,
       timerCallback: null,
       view: null,
     };
@@ -47,23 +48,14 @@ class GameStore {
   onChangeView(str) {
     this.socket.emit("led-stop");
     this.state.buzzListener = null;
-    GameActions.clearTimer.defer();
-    GameActions.clearInterval.defer();
+    clearTimeout(GameActions.tick);
+    this.state.timerCallback = null;
     this.state.view = str;
   }
 
   onClearTimer() {
-    if (!this.state.timerCallback) {
-      clearTimeout(this.state.timerCallback);
-      this.state.timerCallback = null;
-    }
-  }
-
-  onClearInterval() {
-    if (!this.state.intervalCallback) {
-      clearInterval(this.state.intervalCallback);
-      this.state.intervalCallback = null;
-    }
+    clearTimeout(GameActions.tick);
+    this.state.timerCallback = null;
   }
 
   onLedOff(id) {
@@ -95,9 +87,23 @@ class GameStore {
 
   onSetTimer(obj) {
     this.state.timerCallback = obj.callback;
-    setTimeout(() => {
-      this.state.timerCallback();
-    }, obj.time);
+    this.state.seconds = obj.seconds;
+    setTimeout(GameActions.tick, 1000);
+  }
+
+  onTick() {
+    if (this.state.seconds > 1 && this.state.timerCallback) {
+      this.state.seconds = this.state.seconds - 1;
+      setTimeout(GameActions.tick, 1000);
+    } else {
+
+      if (this.state.timerCallback) {
+        this.state.timerCallback();
+      }
+
+      GameActions.clearTimer.defer();
+
+    }
   }
 
   onTogglePlayer(id) {

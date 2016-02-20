@@ -4,6 +4,8 @@ import Challenge from './Challenge';
 import Scoreboard from './Scoreboard';
 import End from './End';
 
+import GameActions from '../../actions/GameActions';
+
 import _ from 'lodash';
 import reqwest from 'reqwest';
 import io from 'socket.io-client';
@@ -214,11 +216,6 @@ export default class Board extends Component {
 
 
   resetChallenge() {
-    this.props.onResetWrong();
-
-    let socket = io();
-    socket.emit(`led-on-${this.state.activePlayer}`);
-
     this.setState({
       challenge: null,
       buzzed: null,
@@ -266,11 +263,11 @@ export default class Board extends Component {
         { challenge ?
           <Challenge
             {...challenge}
+            seconds={this.props.seconds}
             buzzed={buzzed}
             statement={statement}
             onBuzz={this.handleBuzz}
-            start={Date.now()}
-            onReset={this.resetChallenge.bind(this)} /> :
+            reset={this.resetChallenge.bind(this)} /> :
           this._renderBoardState(questions)
         }
         <Scoreboard players={this.props.players} activePlayer={activePlayer} buzzed={buzzed} />
