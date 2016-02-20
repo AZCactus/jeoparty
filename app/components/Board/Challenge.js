@@ -35,9 +35,9 @@ export default class Challenge extends Component {
   render() {
 
     return (
-      <div className="view flex flex-justify flex-middle flex-center flex-column">
+      <div className="view flex flex-justify flex-middle flex-column">
         <span>{this.props.seconds}</span>
-        <h1 style={{width: "75%", textAlign: "center"}}>{this.props.clue}</h1>
+        <h1 className='center' style={{width: "75%"}}>{this.props.clue}</h1>
         {this._renderStatement(this.props.statement)}
       </div>
     );

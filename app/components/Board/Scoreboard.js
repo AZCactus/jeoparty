@@ -5,11 +5,11 @@ import Player from './Player';
 export default class Scoreboard extends Component {
 
 
-  _renderPlayers(players, buzzed) {
+  _renderPlayers(players, buzzed, activePlayer, challenge) {
     let components = [];
 
     players.forEach( player => {
-      components.push(<Player key={player.id} {...player} buzzing={player.id === buzzed} />);
+      components.push(<Player key={player.id} {...player} buzzing={player.id === buzzed} active={!challenge && player.id === activePlayer}  />);
     });
 
     return components;
@@ -17,11 +17,17 @@ export default class Scoreboard extends Component {
 
 
   render() {
+    const {
+      activePlayer,
+      buzzed,
+      challenge,
+      players,
+    } = this.props;
 
     return (
       <footer style={{position: "fixed", bottom: 5, width: "100%"}}>
         <div className="flex flex-justify" style={{width: '80%', margin: '0 auto'}}>
-          {this._renderPlayers(this.props.players, this.props.buzzed)}
+          {this._renderPlayers(players, buzzed, activePlayer, challenge)}
         </div>
       </footer>
     );

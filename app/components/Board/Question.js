@@ -15,11 +15,10 @@ export default class Question extends Component {
     return (
       <div
         key={`question-${id}`}
-        className="flex flex-middle"
-        style={{borderLeft: "2px solid black", borderTop: "2px solid black"}}
+        className='flex flex-middle bl-black bt-black'
         onClick={answered ? void 0 : onSelect.bind(this, {answer: answer, clue: clue, points: points, id: id})}
       >
-        <h3 style={{opacity: answered ? 0 : 1, color: "gold", margin: 0, padding:"15px 0"}}>${points}</h3>
+        <h3 className='yellow' style={{opacity: answered ? 0 : 1, margin: 0, padding: '15px 0'}}>${points}</h3>
       </div>
     );
   }

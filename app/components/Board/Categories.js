@@ -57,12 +57,8 @@ export default class Categories extends Component {
     return (
       <div className="view bg-purple" style={{padding: '0 10px'}}>
         <div
-          className="flex flex-justify flex-start bg-blue"
-          style={{
-            margin: '10px auto 0',
-            borderBottom: '2px solid black',
-            borderRight: '2px solid black'}}
-        >
+          className="flex flex-justify flex-start bg-blue br-black bb-black"
+          style={{margin: '10px auto 0'}}>
           {Object.keys(categories).length ? this._renderCategories() : void 0}
         </div>
       </div>
