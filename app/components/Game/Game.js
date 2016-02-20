@@ -143,15 +143,14 @@ export default class Game extends Component {
         { this.props.loading ? this._renderLoading() : this._renderView(view, players)}
       </div>
     );
-    // return (
-    //   <div style={{textAlign: "center", height: "100%"}}>
-    //     { this.props.loading ? this._renderLoading() : <Board players={_.filter(this.state.players, {wrong: false})} onAddPoints={this.handleAddPoints} onToggleWrong={this.handleToggleWrong} onResetWrong={this.handleResetWrong} /> }
-    //   </div>
-    // );
   }
 
 }
 
 Game.defaultProps = {
   loading: true,
+};
+
+Game.propTypes = {
+  loading: PropTypes.bool,
 };

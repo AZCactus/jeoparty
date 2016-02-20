@@ -7,8 +7,6 @@ import { render } from 'react-dom';
 import Router from 'react-router';
 import createBrowserHistory from 'history/lib/createBrowserHistory';
 
-// DEPENDENCY
-import alt from './alt';
 
 const routes = require('./routes');
 
