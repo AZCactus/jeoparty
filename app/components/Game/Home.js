@@ -27,13 +27,13 @@ export default class Home extends Component {
     ledStrobe.defer();
     buzzListen.defer(this.onBuzz);
 
-    // this.timer = setInterval(() => {
-    //   this.setState({blink: !this.state.blink})
-    // }, 750);
+    this.timer = setInterval(() => {
+      this.setState({blink: !this.state.blink})
+    }, 750);
   }
 
   componentWillUnmount() {
-    // clearInterval(this.timer);
+    clearInterval(this.timer);
   }
 
   onBuzz() {
