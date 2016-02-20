@@ -41,6 +41,12 @@ class GameStore {
     this.bindActions(GameActions);
   }
 
+  onAddPoints(obj) {
+    let players = this.state.players;
+    players[`${obj.id}`].score = parseInt(players[`${obj.id}`].score) + parseInt(obj.points);
+    this.state.players = players;
+  }
+
   onBuzzListen(func) {
     this.state.buzzListener = func;
   }
@@ -66,11 +72,24 @@ class GameStore {
     }
   }
 
+  onLedActivePlayers() {
+    const players = this.state.players;
+
+    Object.keys(players).forEach( (player) => {
+      if (!players[player].wrong) {
+        this.socket.emit(`led-on-${players[player].id}`);
+      }
+    });
+  }
+
   onLedOn(id) {
+    this.socket.emit("led-stop");
     this.socket.emit(`led-on-${id}`);
   }
 
   onLedStrobe(id) {
+    this.socket.emit("led-stop");
+
     if (id) {
       this.socket.emit(`led-strobe-${id}`);
     } else {
@@ -122,6 +141,15 @@ class GameStore {
       players[id] = {id: id, score: 0, wrong: false};
     }
 
+    this.state.players = players;
+  }
+
+  onUpdatePlayerValidity(obj) {
+    let {
+      players,
+    } = this.state;
+
+    players[obj.id].wrong = !obj.valid;
     this.state.players = players;
   }
 }

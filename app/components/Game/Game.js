@@ -19,11 +19,6 @@ export default class Game extends Component {
 
     this.onChange = this.onChange.bind(this);
     this._renderView = this._renderView.bind(this);
-
-    this._renderCanvas = this._renderCanvas.bind(this);
-    this.handleAddPoints = this.handleAddPoints.bind(this);
-    this.handleToggleWrong = this.handleToggleWrong.bind(this);
-    this.handleResetWrong = this.handleResetWrong.bind(this);
   }
 
 
@@ -46,44 +41,6 @@ export default class Game extends Component {
   }
 
 
-  handleToggleWrong(id, bool) {
-    let {
-      players,
-    } = this.state;
-
-    players[id].wrong = bool;
-
-    this.setState({
-      players: players,
-    });
-  }
-
-
-  handleAddPoints(id, points) {
-    let players = this.state.players;
-    players[id].score = parseInt(players[id].score) + parseInt(points);
-
-    this.setState({
-      players: players,
-    });
-  }
-
-
-  handleResetWrong() {
-    let players = this.state.players;
-    const wrongPlayers = _.filter(players, {wrong: true});
-
-    console.log(wrongPlayers);
-    wrongPlayers.forEach( player => {
-      players[player.id].wrong = false;
-    });
-
-    this.setState({
-      players: players,
-    });
-  }
-
-
   _renderLoading() {
     return (
       <p>Loading...</p>
@@ -91,31 +48,7 @@ export default class Game extends Component {
   }
 
 
-  _renderCanvas(selecting, players) {
-
-    const playerCount = Object.keys(players).length;
-
-    let component = playerCount ?
-      <Board
-        onAddPoints={this.handleAddPoints}
-        onResetWrong={this.handleResetWrong}
-        onToggleWrong={this.handleToggleWrong}
-        onTogglePlayer={this.handleTogglePlayer}
-        onToggleSelectionView={this.handleToggleSelectionView}
-        players={_.filter(this.state.players, {wrong: false})}
-      /> :
-      <Home onToggleSelectionView={this.handleToggleSelectionView} />
-
-    if (selecting) {
-      component = <PlayerSelection players={players} onTogglePlayer={this.handleTogglePlayer} onToggleSelectionView={this.handleToggleSelectionView} />
-    }
-
-    return component;
-  }
-
   _renderView(view, players) {
-    console.log("rendering view", view)
-
     let component;
 
     switch(view) {

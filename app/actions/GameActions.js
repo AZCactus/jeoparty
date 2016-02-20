@@ -3,9 +3,11 @@ import alt from '../alt';
 class GameActions {
   constructor() {
     this.generateActions(
+      'addPoints',
       'buzzListen',
       'changeView',
       'clearTimer',
+      'ledActivePlayers',
       'ledOff',
       'ledOn',
       'ledStrobe',
@@ -13,6 +15,7 @@ class GameActions {
       'recordStatement',
       'tick',
       'togglePlayer',
+      'updatePlayerValidity',
     );
   }
 }
