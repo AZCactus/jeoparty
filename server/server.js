@@ -131,6 +131,12 @@ io.sockets.on('connection', function (socket) {
     });
 
     // on
+    socket.on('led-on-all', function () {
+      ledOne.on();
+      ledTwo.on();
+      ledThree.on();
+    });
+
     socket.on('led-on-1', function () {
       ledOne.on();
     });
