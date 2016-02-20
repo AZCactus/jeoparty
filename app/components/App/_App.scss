@@ -5,6 +5,11 @@ $blue: #0A1172;
 $purple: #190230;
 $yellow: #FDF584;
 
+$b-black: 2px solid black;
+$b-purple: 2px solid $purple;
+$b-white: 2px solid white;
+
+
 * {
 	box-sizing: border-box;
 }
@@ -63,6 +68,10 @@ label {
   line-height: 25px;
 }
 
+.center {
+	text-align: center;
+}
+
 .white {
 	color: white;
 }
@@ -77,4 +86,68 @@ label {
 
 .bg-purple {
 	background-color: $purple;
+}
+
+.bg-white {
+	background-color: white;
+}
+
+.b-black {
+	border: $b-black;
+}
+
+.b-purple {
+	border: $b-purple;
+}
+
+.b-white {
+	border: $b-white;
+}
+
+.bt-black {
+	border-top: $b-black;
+}
+
+.br-black {
+	border-right: $b-black;
+}
+
+.bl-black {
+	border-left: $b-black;
+}
+
+.bb-black {
+	border-bottom: $b-black;
+}
+
+.bt-purple {
+	border-top: $b-purple;
+}
+
+.br-purple {
+	border-right: $b-purple;
+}
+
+.bl-purple {
+	border-left: $b-purple;
+}
+
+.bb-purple {
+	border-bottom: $b-purple;
+}
+
+.bt-white {
+	border-top: $b-white;
+}
+
+.br-white {
+	border-right: $b-white;
+}
+
+.bl-white {
+	border-left: $b-white;
+}
+
+.bb-white {
+	border-bottom: $b-white;
 }
