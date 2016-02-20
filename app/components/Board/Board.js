@@ -133,39 +133,35 @@ export default class Board extends Component {
     });
   }
 
+  _setStatement(event) {
+    this.setState({
+      statement: event.results[0][0].transcript,
+    });
+  }
 
-  handleBuzz(player) {
-    console.log(this.props.players)
+  _endRecord() {
+    GameActions.ledOff();
+    this.validateAnswer();
+  }
+
+  handleBuzz(obj) {
+    // console.log(player)
+    // console.log(this.props.players)
+    // console.log(_.filter(this.props.players, {id: player}))
+    const player = obj.player;
 
     if (_.filter(this.props.players, {id: player}).length > 0) {
       this.setState({
         buzzed: player,
       });
 
-
-      let socket = io();
-      let recognition = new webkitSpeechRecognition();
-      recognition.lang = 'en-US';
-
-      recognition.onstart = () => {
-        console.log('recording');
+      const config = {
+        player: player,
+        onresult: this._setStatement.bind(this),
+        onend: this._endRecord.bind(this),
       };
 
-      recognition.onresult = (event) => {
-        console.log(event.results[0][0].transcript);
-        this.setState({
-          statement: event.results[0][0].transcript,
-        });
-      };
-
-      recognition.onend = () => {
-        socket.emit('led-stop');
-        console.log('ended');
-        this.validateAnswer();
-      };
-
-      socket.emit(`led-strobe-${player}`);
-      recognition.start();
+      GameActions.recordStatement(config);
     }
   }
 

@@ -78,11 +78,14 @@ class GameStore {
     }
   }
 
-  onSetInterval(obj) {
-    this.state.intervalCallback = obj.callback;
-    setInterval(() => {
-      this.state.intervalCallback();
-    }, obj.time);
+  onRecordStatement(obj) {
+    let recognition = this.recognition;
+
+    recognition.onstart = () => GameActions.ledStrobe.defer(obj.player);
+    recognition.onresult = obj.onresult;
+    recognition.onend = obj.onend;
+
+    recognition.start();
   }
 
   onSetTimer(obj) {
@@ -121,23 +124,6 @@ class GameStore {
 
     this.state.players = players;
   }
-  //
-  // onCreateStatement() {
-  //   let recognition = new webkitSpeechRecognition();
-  //   recognition.lang = 'en-US';
-  // }
-  //
-  // onToggleLoading(bool) {
-  //   if (bool) {
-  //     this.setState({
-  //       loading: bool,
-  //     });
-  //   } else {
-  //     this.setState({
-  //       loading: !this.state.loading,
-  //     });
-  //   }
-  // }
 }
 
 export default alt.createStore(GameStore, 'GameStore');

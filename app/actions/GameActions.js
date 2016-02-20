@@ -10,9 +10,9 @@ class GameActions {
       'ledOn',
       'ledStrobe',
       'setTimer',
+      'recordStatement',
       'tick',
       'togglePlayer',
-      'createStatement',
     );
   }
 }
