@@ -34,6 +34,7 @@ export default class End extends Component {
     return (
       <div className="view flex flex-column flex-middle flex-center">
         <h1 style={{textTransform: 'uppercase', opacity: this.state.blink ? 1 : 0}}>Player {this.props.id} Wins!</h1>
+        {this.props.score < 0 ? <span style={{color:'red'}}>(I guess?)</span> : null}
         <h2>${this.props.score}</h2>
       </div>
     );

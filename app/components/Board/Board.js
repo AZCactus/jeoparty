@@ -156,7 +156,7 @@ export default class Board extends Component {
     const answeredQuestions = _.filter(questions, {answered: true}).length;
 
     // standard 30 questions
-    if (answeredQuestions < 30) {
+    if (answeredQuestions < 5) {
       return <Categories
         onSelect={this.handleSelect.bind(this)}
         setActivePlayer={this.handleSetActivePlayer.bind(this)}
@@ -184,6 +184,7 @@ export default class Board extends Component {
       <div>
         { challenge ?
           <Challenge
+            key={challenge}
             {...challenge}
             setActivePlayer={this.handleSetActivePlayer.bind(this)}
             players={this.props.players}
