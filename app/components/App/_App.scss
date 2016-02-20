@@ -1,13 +1,25 @@
 $font-stack: Helvetica, sans-serif;
 $primary-color: #aaa;
 
+$blue: #0A1172;
+$purple: #190230;
+$yellow: #FDF584;
+
+* {
+	box-sizing: border-box;
+}
+
+h1, h2, h3, h4, h5 {
+	margin: 0;
+}
+
 body {
 	width: 100%;
 	height: 100%;
 	margin: auto;
 	font: 100% $font-stack;
 	color: white;
-	background-color: blue;
+	background-color: $blue;
 }
 
 div.main-content {
@@ -49,4 +61,20 @@ input:focus {
 
 label {
   line-height: 25px;
+}
+
+.white {
+	color: white;
+}
+
+.yellow {
+	color: $yellow;
+}
+
+.bg-blue {
+	background-color: $blue;
+}
+
+.bg-purple {
+	background-color: $purple;
 }
