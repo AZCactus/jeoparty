@@ -45,7 +45,7 @@ export default class PlayerSelection extends Component {
       return (
         <div key={`player-select-${id}`} className="flex flex-column flex-center" style={{opacity: players[id] ? 1 : "0.5"}}>
           <div style={{fontSize: 28, textTransform: "uppercase"}}>Player</div>
-          <div style={{fontSize: 82, color: players[id] ? "gold" : "white" }}>{id}</div>
+          <div className={`${players[id] ? "yellow" : "white"}`} style={{fontSize: 82}}>{id}</div>
         </div>
       );
     });
@@ -58,9 +58,9 @@ export default class PlayerSelection extends Component {
     } = this.props;
 
     return (
-      <div className="view flex flex-column flex-start flex-center">
+      <div className="view flex flex-column flex-start flex-center flex-middle">
         <header className="full-x" style={{textAlign: "center"}}>
-          <h2 style={{textTransform: "uppercase", fontSize: 44, color: "gold"}}>Who's Ready To Party?</h2>
+          <h2 className="yellow" style={{textTransform: "uppercase", fontSize: 44}}>Who's Ready To Party?</h2>
           <h5>{seconds}</h5>
           <h3>Buzz In To Join Jeoparty</h3>
         </header>
