@@ -88,7 +88,6 @@ let appStore = makeHot(alt, immutable(class AppStore {
   }
 
   onFetchGithub(data) {
-    console.log(data);
     //this.setState(this.state.set('dataByRestApi', Immutable.fromJS({data: 'hello'})));
     this.setState(this.state.set('dataByRestApi', Immutable.fromJS({data: data})));
   }

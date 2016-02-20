@@ -22,7 +22,6 @@ export default class PlayerSelection extends Component {
 
 
   onTimesUp() {
-    console.log("times up!")
     if (Object.keys(this.props.players).length) {
       GameActions.changeView.defer("board");
     } else {

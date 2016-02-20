@@ -1,14 +1,13 @@
 import React, { Component, PropTypes } from 'react';
 
-// COMPONENTS
 import Home from '../Game/Home';
 import PlayerSelection from '../Game/PlayerSelection';
 import Board from '../Board/Board';
 
 import GameStore from '../../stores/GameStore';
-import GameActions from '../../actions/GameActions';
 
 import _ from 'lodash';
+
 
 export default class Game extends Component {
 
@@ -64,6 +63,7 @@ export default class Game extends Component {
 
     return component;
   }
+
 
   render() {
     const {

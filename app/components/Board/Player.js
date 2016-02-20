@@ -14,10 +14,10 @@ export default class Player extends Component {
     return (
       <div
         className={`flex flex-center flex-column flex-middle ${active ? 'b-white' : 'b-black'} ${buzzing ? 'bg-white' : 'bg-blue'}`}
-        style={{borderRadius: 6, padding: '10px 5px'}}>
+        style={{borderRadius: 6, padding: '10px 5px', opacity: wrong ? 0.5 : 1}}>
         <h1
           className='bg-purple center full-x b-black'
-          style={{borderRadius: 3, fontSize: 14, padding: '5px 10px', marginBottom: 10}}>
+          style={{borderRadius: 3, fontSize: 14, padding: '5px 10px', marginBottom: 10, color: score < 0 ? 'red' : 'inherit'}}>
           ${ score}
         </h1>
         <h2

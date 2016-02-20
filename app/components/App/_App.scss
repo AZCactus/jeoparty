@@ -81,6 +81,10 @@ label {
 	color: $yellow;
 }
 
+.purple {
+	color: $purple;
+}
+
 .bg-blue {
 	background-color: $blue;
 }
@@ -91,6 +95,10 @@ label {
 
 .bg-white {
 	background-color: white;
+}
+
+.bg-red-fade {
+	background: rgba(red, 0.75);
 }
 
 .b-black {
