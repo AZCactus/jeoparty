@@ -19,8 +19,10 @@ export default class Scoreboard extends Component {
   render() {
 
     return (
-      <footer className="flex flex-justify" style={{position: "fixed", bottom: 0, width: "100%"}}>
-        {this._renderPlayers(this.props.players, this.props.buzzed)}
+      <footer style={{position: "fixed", bottom: 5, width: "100%"}}>
+        <div className="flex flex-justify" style={{width: '80%', margin: '0 auto'}}>
+          {this._renderPlayers(this.props.players, this.props.buzzed)}
+        </div>
       </footer>
     );
   }
