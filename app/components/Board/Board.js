@@ -266,7 +266,7 @@ export default class Board extends Component {
             reset={this.resetChallenge.bind(this)} /> :
           this._renderBoardState(questions)
         }
-        <Scoreboard players={this.props.players} activePlayer={activePlayer} buzzed={buzzed} />
+        <Scoreboard players={this.props.players} activePlayer={activePlayer} buzzed={buzzed} challenge={challenge} />
       </div>
     );
   }
