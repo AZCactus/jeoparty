@@ -11,7 +11,6 @@ class GameStore {
   constructor() {
     this.state = {
       buzzListener: null,
-      intervalCallback: null,
       players: {},
       seconds: 0,
       timerCallback: null,
