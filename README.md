@@ -80,7 +80,8 @@ STRUCTURE
 ```
 
 ## Credits
-- Logo by [Robert Griffiths / Guttermagic](http://www.guttermagic.net/)
+- Logo by [Bobby Griffiths / Guttermagic](http://www.guttermagic.net/)
+- Interactive Design by [Klarika Huszar](https://www.instagram.com/booghosty/)
 - Started With [web-react](https://github.com/darul75/web-react)
 
 ===========
