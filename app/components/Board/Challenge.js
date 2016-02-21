@@ -16,7 +16,7 @@ export default class Challenge extends Component {
 
 
   componentDidMount() {
-    this.startTheCount(10);
+    this.startTheCount(8);
     GameActions.buzzListen(this.handleClick.bind(this));
   }
 
