@@ -1,7 +1,5 @@
 ## J E O P A R T Y
 
-=====================
-
 Arduino + Raspberry Pi + React = Party Time!
 
 
@@ -81,9 +79,9 @@ STRUCTURE
 └── package.json                # The list of 3rd party libraries and utilities
 ```
 
-===========
-
-* started with [web-react](https://github.com/darul75/web-react)
+## Credits
+- Logo by [Robert Griffiths / Guttermagic](http://www.guttermagic.net/)
+- Started With [web-react](https://github.com/darul75/web-react)
 
 ===========
 
