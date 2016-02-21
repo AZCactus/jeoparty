@@ -15,10 +15,12 @@ export default class Home extends Component {
   componentDidMount() {
     const {
       buzzListen,
+      flushPlayers,
       ledOff,
       ledStrobe,
     } = GameActions;
 
+    flushPlayers.defer();
     ledOff.defer();
     ledStrobe.defer();
     buzzListen.defer(this.onBuzz);

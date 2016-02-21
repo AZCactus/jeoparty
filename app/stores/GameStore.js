@@ -64,6 +64,10 @@ class GameStore {
     this.state.timerCallback = null;
   }
 
+  onFlushPlayers() {
+    this.state.players = {};
+  }
+
   onLedOff(id) {
     if (id) {
       this.socket.emit(`led-off-${id}`);

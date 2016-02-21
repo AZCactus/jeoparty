@@ -7,6 +7,7 @@ class GameActions {
       'buzzListen',
       'changeView',
       'clearTimer',
+      'flushPlayers',
       'ledActivePlayers',
       'ledOff',
       'ledOn',
