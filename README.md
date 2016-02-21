@@ -10,7 +10,7 @@ How to use it
 
 Webpack with hot changes loading but no own server, enough for a single presentation page app by instance. Port: 8080
 
-See changes at [http://127.0.0.1:8080](http://127.0.0.1:8080)
+See changes at [https://127.0.0.1:8080](https://127.0.0.1:8080)
 
 ```
 npm run dev
@@ -38,7 +38,7 @@ or with debug nodejs mode :
 npm run dev-server-debug
 ```
 
-See changes at [http://127.0.0.1:3000](http://127.0.0.1:3000)
+See changes at [https://127.0.0.1:3000](https://127.0.0.1:3000)
 
 *PRODUCTION*
 
@@ -53,7 +53,7 @@ Run production client/server React/Express website.
 npm run start
 ```
 
-See it at [http://127.0.0.1:3000](http://127.0.0.1:3000)
+See it at [https://127.0.0.1:3000](https://127.0.0.1:3000)
 
 STRUCTURE
 -------------
