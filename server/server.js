@@ -16,7 +16,7 @@ import express from 'express';
 import favicon from 'serve-favicon';
 
 // JOHNNY-FIVE
-import five from 'johnny-five';
+import { Board, Button, Leds } from 'johnny-five';
 import socket from 'socket.io';
 
 
@@ -70,24 +70,21 @@ if(module.hot) {
 
 //
 // johnny-five config
-let ledOne, ledTwo, ledThree, playerOne, playerTwo, playerThree;
-let board = new five.Board({port: process.env.USB ? process.env.USB :'/dev/cu.usbmodem1411'});
+let leds, players;
+let board = new Board({port: process.env.USB ? process.env.USB :'/dev/cu.usbmodem1411'});
 
 board.on("ready", function() {
   console.log("board is ready")
 
-  ledOne = new five.Led(3);
-  ledTwo = new five.Led(6);
-  ledThree = new five.Led(9);
-
-  playerOne = new five.Button(2);
-  playerTwo = new five.Button(5);
-  playerThree = new five.Button(8);
+  leds = new Leds([3, 6, 9]);
+  players = [
+    new Button(2),
+    new Button(5),
+    new Button(8),
+  ];
 
   board.repl.inject({
-    playerOne: playerOne,
-    playerTwo: playerTwo,
-    playerThree: playerThree,
+    players: players
   });
 
 });
@@ -101,85 +98,28 @@ let io = socket(server);
 io.sockets.on('connection', function (socket) {
 
   // if board is ready
-  if(board.isReady){
+  if (board.isReady){
 
     // Player Buttons
-    playerOne.on("up", function() {
-      socket.emit('rec', {player: 1});
+    players.forEach((player, index) => {
+      player.on("up", () => socket.emit("rec", { player: index + 1 }));
     });
-    playerTwo.on("up", function() {
-      socket.emit('rec', {player: 2});
-    });
-
-    playerThree.on("up", function() {
-      socket.emit('rec', {player: 3});
-    });
-
 
     // Player Button LEDs
-    // strobe
-    socket.on('led-strobe-1', function () {
-      ledOne.strobe();
-    });
-
-    socket.on('led-strobe-2', function () {
-      ledTwo.strobe();
-    });
-
-    socket.on('led-strobe-3', function () {
-      ledThree.strobe();
-    });
-
     // on
-    socket.on('led-on-all', function () {
-      ledOne.on();
-      ledTwo.on();
-      ledThree.on();
-    });
-
-    socket.on('led-on-1', function () {
-      ledOne.on();
-    });
-
-    socket.on('led-on-2', function () {
-      ledTwo.on();
-    });
-
-    socket.on('led-on-3', function () {
-      ledThree.on();
-    });
+    socket.on("led-on", (id) => leds[id - 1].on());
+    socket.on("led-on-all", () => leds.on());
 
     // off
-    socket.on('led-off-1', function () {
-      ledOne.off();
-    });
+    socket.on("led-off", (id) => leds[id - 1].stop().off());
+    socket.on("led-off-all", () => leds.stop().off());
 
-    socket.on('led-off-2', function () {
-      ledTwo.off();
-    });
-
-    socket.on('led-off-3', function () {
-      ledThree.off();
-    });
-
-
-    // All LED Strobe
-    socket.on("led-strobe-all", function () {
-      ledOne.strobe(210);
-      setTimeout(function() {
-        ledTwo.strobe(210)
-      }, 70);
-      setTimeout(function() {
-        ledThree.strobe(210)
-      }, 140);
-    });
-
-
-    // LED off
-    socket.on('led-stop', function () {
-      ledOne.stop().off();
-      ledTwo.stop().off();
-      ledThree.stop().off();
+    // strobe
+    socket.on("led-strobe", (id) => leds[id - 1].strobe());
+    socket.on("led-strobe-all", () => {
+      leds[0].strobe(210);
+      board.wait(70, () => leds[1].strobe(210));
+      board.wait(140, () => leds[2].strobe(210));
     });
   }
 

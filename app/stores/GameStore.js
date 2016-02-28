@@ -51,7 +51,7 @@ class GameStore {
   }
 
   onChangeView(str) {
-    this.socket.emit("led-stop");
+    this.socket.emit("led-off-all");
     this.state.buzzListener = null;
     clearTimeout(GameActions.tick);
     this.state.timerCallback = null;
@@ -69,9 +69,9 @@ class GameStore {
 
   onLedOff(id) {
     if (id) {
-      this.socket.emit(`led-off-${id}`);
+      this.socket.emit("led-off", id);
     } else {
-      this.socket.emit("led-stop");
+      this.socket.emit("led-off-all");
     }
   }
 
@@ -80,23 +80,23 @@ class GameStore {
 
     Object.keys(players).forEach( (player) => {
       if (!players[player].wrong) {
-        this.socket.emit(`led-on-${players[player].id}`);
+        this.socket.emit("led-on", players[player].id);
       }
     });
   }
 
   onLedOn(id) {
-    this.socket.emit("led-stop");
-    this.socket.emit(`led-on-${id}`);
+    this.socket.emit("led-off-all");
+    this.socket.emit("led-on", id);
   }
 
   onLedStrobe(id) {
-    this.socket.emit("led-stop");
+    this.socket.emit("led-off-all");
 
     if (id) {
-      this.socket.emit(`led-strobe-${id}`);
+      this.socket.emit("led-strobe", id);
     } else {
-      this.socket.emit(`led-strobe-all`);
+      this.socket.emit("led-strobe-all");
     }
   }
 
@@ -138,9 +138,9 @@ class GameStore {
 
     if (players[id]) {
       delete players[id];
-      this.socket.emit(`led-off-${id}`);
+      this.socket.emit("led-off", id);
     } else {
-      this.socket.emit(`led-on-${id}`);
+      this.socket.emit("led-on", id);
       players[id] = {id: id, score: 0, wrong: false};
     }
 
