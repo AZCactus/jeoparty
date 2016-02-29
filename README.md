@@ -1,44 +1,32 @@
-## J E O P A R T Y
+# J E O P A R T Y
+![Jeoparty logo](https://raw.githubusercontent.com/keithpops/jeoparty/master/app/images/jeoparty.jpg)
+Hardware + React = Party Time!
 
-Arduino + Raspberry Pi + React = Party Time!
+## What's a Jeoparty?
+Got a spare 25 minutes to burn? Watch this from [React Conf](http://conf.reactjs.com/) 2016.
+
+**Sorry, I got like 30 seconds.**
+
+No problem!
+
+*Jeoparty* is a proof-of-concept, arcade-version of the game show Jeopardy. It is meant to be played with physical buttons, voice control, a screen (preferably one with touch capabilities), and a physical method for selecting questions on a game board. Its UI is lovingly constructed using [react.js](https://facebook.github.io/react/) and the physical interactions are managed with the wonderful [Johnny-Five](http://johnny-five.io/) library from [Bocoup](https://bocoup.com/). The game was initially constructed to run on a [Raspberry Pi](https://www.raspberrypi.org/) with [Chromium](https://www.chromium.org/) connected to an [Arduino](https://www.arduino.cc/) but with some small modifications, it should be capable of running on nearly any hardware configuration you prefer.
 
 
-How to use it
--------------
+### How to use it:
 
-*DEV ONLY CLIENT*
+*DEVELOPMENT*
 
-Webpack with hot changes loading but no own server, enough for a single presentation page app by instance. Port: 8080
-
-See changes at [https://127.0.0.1:8080](https://127.0.0.1:8080)
-
-```
-npm run dev
-```
-
-*DEV ONLY CLIENT/SERVER*
-
-Let's use your own NodeJS server.
-
-Start webpack in background with *hot changes loading* and *debug* in both client/server sides.
-
+Start webpack in one terminal window for *hot changes*.
 ```
 npm run dev-server-client
 ```
-
-*Then* start your node server which is an express one in this case that will be launched in ES6 thanks to Babel.
-
+Start the server (with your Arduino / etc plugged in) in another terminal window.
 ```
 npm run dev-server
 ```
+See changes at [https://127.0.0.1:8080](https://127.0.0.1:8080)
 
-or with debug nodejs mode :
-
-```
-npm run dev-server-debug
-```
-
-See changes at [https://127.0.0.1:3000](https://127.0.0.1:3000)
+---
 
 *PRODUCTION*
 
@@ -55,8 +43,21 @@ npm run start
 
 See it at [https://127.0.0.1:3000](https://127.0.0.1:3000)
 
-STRUCTURE
--------------
+
+### Todo:
+- [ ] - Write some articles about how any of this stuff works per request of this [issue](https://github.com/keithpops/jeoparty/issues/1).
+- [ ] - Either remove `react-router` or do something useful with it.
+- [ ] - Remove `web-react` tech debt - Since I started with [web-react](https://github.com/darul75/web-react) as a boilerplate, there's a considerable amount of things that can get stripped out. `web-react` was awesome to just get a node app up and running with something on a page, but it did bring along dependencies that are likely a little excessive and no longer necessary for the game to function.
+- [ ] - Fix `eslint` errors (and there's tons!)
+- [ ] - Create a branch leveraging [react-hardware](https://github.com/iamdustan/react-hardware) just for fun.
+- [ ] - Fix up the hack-ish SSL Chromium microphone permission stuff.
+- [ ] - Clean up and abstract some of the various timers.
+- [ ] - Create a parts list (with some options).
+- [ ] - Create a tool list.
+- [ ] - Buy cat food.
+
+
+### Structure:
 ```
 .
 ├── /build/                     # Compiled output
@@ -79,14 +80,13 @@ STRUCTURE
 └── package.json                # The list of 3rd party libraries and utilities
 ```
 
-## Credits
+### Credits
 - Logo by [Bobby Griffiths / Guttermagic](http://www.guttermagic.net/)
 - Interactive Design by [Klarika Huszar](https://www.instagram.com/booghosty/)
 - Started With [web-react](https://github.com/darul75/web-react)
 
-===========
 
-## License
+### License
 
 The MIT License (MIT)
 
