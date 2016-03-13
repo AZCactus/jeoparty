@@ -3,7 +3,7 @@
 Hardware + React = Party Time!
 
 ## What's a Jeoparty?
-Got a spare 25 minutes to burn? Watch this from [React Conf](http://conf.reactjs.com/) 2016.
+Got a spare 25 minutes to burn? Watch [this](https://www.youtube.com/watch?v=GnIrNYtmRDg) from [React Conf](http://conf.reactjs.com/) 2016.
 
 **Sorry, I got like 30 seconds.**
 
